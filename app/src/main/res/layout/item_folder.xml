@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pm.launcher.widget.FolderView
+            android:id="@+id/folder_view"
+            android:layout_width="115dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:clipToPadding="false"
+            android:padding="15dp">
+
+            <View
+                android:id="@+id/folder_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#b7b7b7"
+                android:visibility="visible" />
+
+            <com.pm.launcher.widget.FolderGridLayout
+                android:id="@+id/folder_grid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:folderColumnCount="2"
+                app:folderGap="8dp"
+                app:folderRowCount="2">
+
+            </com.pm.launcher.widget.FolderGridLayout>
+
+            <FrameLayout
+                android:id="@+id/folder_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/folder_check_box"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="-8dp"
+                android:layout_marginTop="-8dp"
+                android:background="@drawable/ic_unchecked"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/folder_tag"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#878787"
+                android:gravity="center"
+                android:textColor="#FFF" />
+        </com.pm.launcher.widget.FolderView>
+
+        <android.support.v7.widget.CardView
+            xmlns:cardview="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            cardview:cardBackgroundColor="@color/launcher_holo_blue_bright"
+            cardview:cardCornerRadius="60dp"
+            cardview:cardElevation="10dp"
+            cardview:cardPreventCornerOverlap="true"
+            cardview:cardUseCompatPadding="true"
+            cardview:contentPadding="20dp">
+            <!--
+            为了版本适配
+             app:cardPreventCornerOverlap = "true"
+            app:cardUseCompatPadding = "true"
+             -->
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_app_icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/app_name"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
+</layout>

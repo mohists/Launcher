@@ -6,36 +6,34 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.RelativeLayout;
+
+import com.pm.launcher.widget.LauncherView;
 
 import java.util.List;
 
 public class Launcher extends Activity implements AppInfoAdapter.OnChildClickListener {
 
-    private GridView mGridView;
+    private static final String TAG = "Launcher";
     private RelativeLayout laucher;
 
     private RecyclerView mRecyclerView;
-
+    private LauncherView mLauncherView;
     private PackageManager mPackageManager;
     private List<ResolveInfo> mResolveInfos;
     private AppInfoAdapter adapter;
+    private AppListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher);
         initialize();
-        initData();
-//        AppIconAdapter adapter=new AppIconAdapter(this,mResolveInfos,R.layout.item_app);
-//        mGridView.setAdapter(adapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+//        initData();
+        /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         adapter = new AppInfoAdapter(mResolveInfos, this);
@@ -43,7 +41,48 @@ public class Launcher extends Activity implements AppInfoAdapter.OnChildClickLis
         AppItemTouchHelper.AppItemTouchHelperCallback touchHelperCallback = new AppItemTouchHelper.AppItemTouchHelperCallback(adapter);
         AppItemTouchHelper itemTouchHelper = new AppItemTouchHelper(touchHelperCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        registerListener();
+        registerListener();*/
+        //
+//        mLauncherView.setAdapter(new AppListAdapter(Data.getResolveInfos(this),this));
+        mAdapter = new AppListAdapter();
+        mAdapter.registerObserver(new AppListAdapter.MyObserver() {
+            @Override
+            public void onChecked(boolean isChecked) {
+                super.onChecked(isChecked);
+            }
+
+            @Override
+            public void onEditChanged(boolean inEdit) {
+                super.onEditChanged(inEdit);
+            }
+
+            @Override
+            public void onHideSubDialog() {
+                super.onHideSubDialog();
+            }
+
+            @Override
+            public void onRestore() {
+                super.onRestore();
+            }
+        });
+        mAdapter.addData(Data.getAppList(this));
+        mLauncherView.setAdapter(mAdapter);
+        mLauncherView.setDebugAble(true);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent: ");
+        mAdapter.setEditMode(false);
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: ");
+        mAdapter.setEditMode(false);
+        super.onBackPressed();
     }
 
     private void registerListener() {
@@ -80,8 +119,8 @@ public class Launcher extends Activity implements AppInfoAdapter.OnChildClickLis
     }
 
     private void initialize() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_container);
-//        mGridView = (GridView) findViewById(R.id.gv_container);
+        mLauncherView = (LauncherView) findViewById(R.id.launcher_view);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.rv_container);
         laucher = (RelativeLayout) findViewById(R.id.laucher);
     }
 
