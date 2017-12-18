@@ -2,6 +2,7 @@ package com.pm.launcher;
 
 import android.content.Context;
 import android.content.pm.ResolveInfo;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     private OnChildLongClickListener mOnChildLongClickListener;
 
 
-    public AppInfoAdapter(List<ResolveInfo> mResolveInfos, Context context ) {
+    public AppInfoAdapter(List<ResolveInfo> mResolveInfos, Context context) {
         this.mResolveInfos = mResolveInfos;
         this.mContext = context;
 
@@ -43,7 +44,7 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        this.mRecyclerView=recyclerView;
+        this.mRecyclerView = recyclerView;
     }
 
     @Override
@@ -61,8 +62,25 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         holder.appIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
                 int layoutPosition = holder.getLayoutPosition();
-                mOnChildClickListener.onChildClick(v,layoutPosition,mResolveInfos.get(layoutPosition));
+                mOnChildClickListener.onChildClick(v, layoutPosition, mResolveInfos.get(layoutPosition));
+            }
+        });
+
+        holder.uninstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int layoutPosition = holder.getLayoutPosition();
+                mOnChildClickListener.onChildClick(v, layoutPosition, mResolveInfos.get(layoutPosition));
+            }
+        });
+
+        holder.appIcon.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d(TAG, "onLongClick: ");
+                return true;
             }
         });
     }
@@ -74,24 +92,30 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mResolveInfos==null ? 0:mResolveInfos.size();
+        return mResolveInfos == null ? 0 : mResolveInfos.size();
     }
 
-    public List<ResolveInfo> getData(){
-        if(mResolveInfos!=null){
+    public List<ResolveInfo> getData() {
+        if (mResolveInfos != null) {
             return mResolveInfos;
-        }else {
+        } else {
             Log.e(TAG, "getData: mResolveInfos is null");
             return null;
         }
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView appIcon;
         private TextView appLabel;
+        private CardView cardView;
+        private TextView uninstall;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            appIcon= (ImageView) itemView.findViewById(R.id.iv_app_icon);
-            appLabel= (TextView) itemView.findViewById(R.id.tv_app_name);
+            cardView = (CardView) itemView.findViewById(R.id.item);
+            appIcon = (ImageView) itemView.findViewById(R.id.iv_app_icon);
+            appLabel = (TextView) itemView.findViewById(R.id.tv_app_name);
+            uninstall = (TextView) itemView.findViewById(R.id.tv_uninstall);
         }
     }
 
@@ -103,11 +127,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
         this.mOnChildLongClickListener = mOnChildLongClickListener;
     }
 
-    interface OnChildClickListener{
-        void onChildClick(View view,int position,ResolveInfo resolveInfo);
+    interface OnChildClickListener {
+        void onChildClick(View view, int position, ResolveInfo resolveInfo);
     }
 
-    interface OnChildLongClickListener{
-        void OnChildLongClick(View view);
+    interface OnChildLongClickListener {
+        void onChildLongClick(View view, int position, ResolveInfo resolveInfo);
     }
 }

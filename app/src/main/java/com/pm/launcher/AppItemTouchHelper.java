@@ -1,9 +1,11 @@
 package com.pm.launcher;
 
+import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Collections;
 
@@ -77,29 +79,47 @@ public class AppItemTouchHelper extends ItemTouchHelper {
 
         @Override
         public boolean isLongPressDragEnabled() {
+            Log.d(TAG, "isLongPressDragEnabled: ");
             return super.isLongPressDragEnabled();
         }
 
         @Override
         public boolean isItemViewSwipeEnabled() {
+            Log.d(TAG, "isItemViewSwipeEnabled: ");
             return super.isItemViewSwipeEnabled();
         }
 
         @Override
         public boolean canDropOver(RecyclerView recyclerView, RecyclerView.ViewHolder current, RecyclerView.ViewHolder target) {
+            Log.d(TAG, "canDropOver: ");
+            current.itemView.findViewById(R.id.tv_uninstall).setVisibility(View.INVISIBLE);
+
             return super.canDropOver(recyclerView, current, target);
         }
 
         @Override
         public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+
+            Log.d(TAG, "onSelectedChanged: ");
             super.onSelectedChanged(viewHolder, actionState);
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-                viewHolder.itemView.setAlpha(0.6f);
+                Log.d(TAG, "onSelectedChanged: ACTION_STATE_DRAG");
+                viewHolder.itemView.setAlpha(0.4f);
+                viewHolder.itemView.setContentDescription("hello");
+//                viewHolder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+                viewHolder.itemView.findViewById(R.id.tv_uninstall).setVisibility(View.VISIBLE);
+            }
+            if(actionState == ItemTouchHelper.ACTION_STATE_IDLE){
+                Log.d(TAG, "onSelectedChanged: ACTION_STATE_IDLE");
+            }
+            if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                Log.d(TAG, "onSelectedChanged: ACTION_STATE_SWIPE");
             }
         }
 
         @Override
         public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            Log.d(TAG, "clearView: ");
             super.clearView(recyclerView, viewHolder);
             viewHolder.itemView.setAlpha(1f);
         }

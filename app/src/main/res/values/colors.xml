@@ -6,4 +6,5 @@
 
     <color name="launcher_accent_color">#ff009688</color>
     <color name="launcher_holo_blue_bright">#0000ddff</color>
+    <color name="uninstall_text_color">#FFFFFF</color>
 </resources>

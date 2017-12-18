@@ -8,7 +8,7 @@ import android.graphics.Color;
 
 import com.pm.launcher.compat.LauncherActivityInfoCompat;
 import com.pm.launcher.compat.UserHandleCompat;
-import com.pm.launcher.compat.UserManagerCompat;
+//import com.pm.launcher.compat.UserManagerCompat;
 
 /**
  * Created by puming on 2017/2/17.
@@ -82,7 +82,8 @@ public class AppInfo{
 
     public static Intent makeLaunchIntent(Context context, LauncherActivityInfoCompat info,
                                           UserHandleCompat user) {
-        long serialNumber = UserManagerCompat.getInstance(context).getSerialNumberForUser(user);
+//        long serialNumber = UserManagerCompat.getInstance(context).getSerialNumberForUser(user);
+        long serialNumber = 0;
         return new Intent(Intent.ACTION_MAIN)
                 .addCategory(Intent.CATEGORY_LAUNCHER)
                 .setComponent(info.getComponentName())

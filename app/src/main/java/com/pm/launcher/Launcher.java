@@ -5,19 +5,23 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
-public class Launcher extends Activity implements AppInfoAdapter.OnChildClickListener {
-
+public class Launcher extends Activity implements AppInfoAdapter.OnChildClickListener, AppInfoAdapter.OnChildLongClickListener {
     private GridView mGridView;
     private RelativeLayout laucher;
 
@@ -57,7 +61,21 @@ public class Launcher extends Activity implements AppInfoAdapter.OnChildClickLis
         adapter.setOnChildClickListener(new AppInfoAdapter.OnChildClickListener() {
             @Override
             public void onChildClick(View view, int position, ResolveInfo resolveInfo) {
-                startActivity(position);
+                if (view instanceof ImageView) {
+                    startActivity(position);
+
+                } else if (view instanceof TextView) {
+                    view.setVisibility(View.INVISIBLE);
+                    startApplicationUninstallActivity(position);
+
+                }
+            }
+        });
+
+        adapter.setOnChildLongClickListener(new AppInfoAdapter.OnChildLongClickListener() {
+            @Override
+            public void onChildLongClick(View view, int position, ResolveInfo resolveInfo) {
+                Log.d("APP", "OnChildLongClick: ");
             }
         });
     }
@@ -88,5 +106,35 @@ public class Launcher extends Activity implements AppInfoAdapter.OnChildClickLis
     @Override
     public void onChildClick(View view, int position, ResolveInfo resolveInfo) {
         startActivity(position);
+    }
+
+    @Override
+    public void onChildLongClick(View view, int position, ResolveInfo resolveInfo) {
+    }
+
+    // returns true if the activity was started
+    boolean startApplicationUninstallActivity(int position) {
+        if (false) {
+            // System applications cannot be installed. For now, show a toast explaining that.
+            // We may give them the option of disabling apps this way.
+            Toast.makeText(this, "系统应用无法卸载", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            ResolveInfo info = mResolveInfos.get(position);
+            String packageName = info.activityInfo.packageName;
+            String className = info.activityInfo.name;
+            ComponentName componentName = new ComponentName(packageName, className);
+//            String packageName = componentName.getPackageName();
+//            String className = componentName.getClassName();
+            Intent intent = new Intent(
+                    Intent.ACTION_DELETE, Uri.fromParts("package", packageName, className));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//            if (user != null) {
+//                user.addToIntent(intent, Intent.EXTRA_USER);
+//            }
+            startActivity(intent);
+            return true;
+        }
     }
 }
