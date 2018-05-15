@@ -34,9 +34,9 @@ public class AllAppsContainerView extends FrameLayout implements View.OnTouchLis
 
     private final Launcher mLauncher;
     //    private final AlphabeticalAppsList mApps;
-    private final AppInfoAdapter mAdapter;
-    private final RecyclerView.LayoutManager mLayoutManager;
-    private final RecyclerView.ItemDecoration mItemDecoration;
+    private  AppInfoAdapter mAdapter;
+    private  RecyclerView.LayoutManager mLayoutManager;
+    private  RecyclerView.ItemDecoration mItemDecoration;
 
     // The computed bounds of the container
     private final Rect mContentBounds = new Rect();

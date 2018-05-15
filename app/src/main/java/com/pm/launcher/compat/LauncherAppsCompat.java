@@ -59,7 +59,7 @@ public abstract class LauncherAppsCompat {
                 if (Utilities.ATLEAST_LOLLIPOP) {
                     sInstance = new LauncherAppsCompatVL(context.getApplicationContext());
                 } else {
-//                    sInstance = new LauncherAppsCompatV16(context.getApplicationContext());
+                    sInstance = new LauncherAppsCompatV16(context.getApplicationContext());
                 }
             }
             return sInstance;
